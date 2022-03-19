@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}New Publication{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="social_network_src">Social network origin</label>
+    <input name="social_network_src" id="social_network_src" value="{{ request.form['social_network_src'] }}" required>
+    <label for="link">link</label>
+    <input name="link" id="link" value="{{ request.form['link'] }}" required>
+    <input type="checkbox" id="activated" name="activated" checked>
+    <label for="activated">Activated</label>
+    <input type="submit" value="Save">
+  </form>
+{% endblock %}

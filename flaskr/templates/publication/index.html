@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Publications{% endblock %}</h1>
+  {% if g.user %}
+    <a class="action" href="{{ url_for('publication.create') }}">Add</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% for publication in publications %}
+    <article class="post">
+      <header>
+        <div>
+          <h1>{{ publication['link'] }}</h1>
+          <div class="about">Added {{ publication['created'].strftime('%Y-%m-%d') }}, Status: {{ publication['activated'] }}</div>
+          {% if g.user['id'] == publication['author_id'] %}
+            <a class="action" href="{{ url_for('publication.update', id=publication['author_id']) }}">Edit</a>
+          {% endif %}
+        </div>
+      </header>
+    </article>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+<footer>
+  <p>© 2022 Influencia</p>
+</footer>
+{% endblock %}

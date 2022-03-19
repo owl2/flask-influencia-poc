@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Edit "{{ publication['link'] }}"{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="social_network_src">Social network origin</label>
+    <input name="social_network_src" id="social_network_src" value="{{ request.form['social_network_src'] or publication['social_network_src'] }}" required>
+    <label for="link">link</label>
+    <input name="link" id="link" value="{{ request.form['link'] or publication['link'] }}" required>
+    <input type="checkbox" id="activated" name="activated" checked>
+    <label for="activated">Activated</label>
+    <input type="submit" value="Save">
+  </form>z
+  <hr>
+  <form action="{{ url_for('publication.delete', id=publication['author_id']) }}" method="post">
+    <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+  </form>
+{% endblock %}
