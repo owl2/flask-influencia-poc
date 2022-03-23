@@ -1,0 +1,102 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.influencia</groupId>
+        <artifactId>influencia</artifactId>
+        <version>BUILD-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>influencia-lambda-collect</artifactId>
+    <packaging>pom</packaging>
+
+    <name>Omniscient - Influencia - Lambda Collect</name>
+    <description>Lambda to collect datas</description>
+
+    <!-- Properties -->
+    <properties>
+        <project.version>${project.version}</project.version>
+        <buildtime>${maven.build.timestamp}</buildtime>
+
+        <python.version>3.9</python.version>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <failOnError>false</failOnError>
+                    <filesets>
+                        <fileset>
+                            <directory>${project.basedir}/venv</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <id>create-virtualenv</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>${project.basedir}</workingDirectory>
+                            <executable>bash</executable>
+                            <arguments>
+                                <argument>-cl</argument>
+                                <argument>virtualenv venv</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                     <execution>
+                        <phase>generate-sources</phase>
+                        <id>activate-virtual-env</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>${project.basedir}</workingDirectory>
+                            <executable>bash</executable>
+                            <arguments>
+                                <argument>-cl</argument>
+                                <argument>source venv/bin/activate &amp;&amp; pip install boto3</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/assembly.xml</descriptor>
+                    </descriptors>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <finalName>influencia-lambda-collect</finalName>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
